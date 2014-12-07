@@ -1,0 +1,47 @@
+﻿@model int
+@{
+    ViewBag.Title = "ViewPoem";
+}
+
+
+@foreach (var poem in ViewBag.Poems)
+{
+    if (poem.Id == ViewBag.id)
+    { 
+    <div style="background-color:silver; padding:3px; margin:5px;">
+        @if (User.Identity.Name == "leksi"){
+            @Html.ActionLink("Удалить поэму", "DeletePoem", new { Id = poem.Id })
+        }
+        <div style="background-color: white; padding: 3px; margin: 5px;">
+            <p>@poem.poem</p>
+            <p>Дата: @poem.data</p>
+        </div>
+            @using (Html.BeginForm("CreateMsg", "Home", FormMethod.Post))
+        {
+                <fieldset>
+                    <legend>Добавить запись</legend>
+                    Введите свой комментарий: <br />
+                    <textarea name="text" rows="2" cols="20"></textarea>
+                    <input type="text" name="poem_id" value="@poem.Id" hidden>
+                    <br />
+                    <input type="submit" value="Отправить" />
+                </fieldset>
+        }
+            @foreach (var msg in ViewBag.Comm)
+{
+    if (msg.poem_id == poem.Id)
+    {
+        <div style="background-color: rgb(145, 137, 216); padding: 3px; margin: 5px;">
+            <p>@msg.text</p>
+            <p>Добавил(а) <b>@msg.username</b>. Дата: @msg.data</p>
+            @if (User.Identity.Name == msg.username || User.Identity.Name == "leksi")
+            {
+                @Html.ActionLink("Удалить комментарий", "DeleteComment", new { id = msg.Id,  poem_id = poem.Id})
+            }
+        </div>
+    }
+}
+
+        </div>
+    }
+}

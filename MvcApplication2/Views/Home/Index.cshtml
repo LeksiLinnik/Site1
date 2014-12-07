@@ -1,0 +1,27 @@
+﻿@model IEnumerable<MvcApplication2.Models.Commets>
+@{
+    ViewBag.Title = "Home Page";
+}
+@if (User.Identity.Name == "leksi")
+{
+    using (Html.BeginForm("CreatePoem", "Home", FormMethod.Post))
+    {
+    <fieldset>
+        <legend>Добавить поэмку</legend>
+        Введите своё стихотворение: <br />
+        <textarea name="poem" rows="5" cols="40"></textarea>
+        <br />
+        <input type="submit" value="Отправить" />
+    </fieldset>
+    }
+}
+<h3>Все записи</h3>
+@foreach (var poem in ViewBag.Poems)
+{
+    <div style="background-color:silver; padding:3px; margin:5px;">
+        <pre>@poem.poem</pre>
+        <p>Добавил(а) <b>Alexandra</b>. Дата: @poem.data</p>
+        @Html.ActionLink("Оставить комментарий...", "ViewPoem", new { poem = poem.Id })
+    </div>
+
+}
